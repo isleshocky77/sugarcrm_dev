@@ -53,11 +53,14 @@ class MBPackage{
     }
     function loadModules($force=false){
         if(!file_exists(MB_PACKAGE_PATH . '/' . $this->name .'/modules'))return;
-        $d = dir(MB_PACKAGE_PATH . '/' . $this->name .'/modules');
-        while($e = $d->read()){
-            if(substr($e, 0, 1) != '.' && is_dir(MB_PACKAGE_PATH . '/'. $this->name. '/modules/' . $e)){
-                $this->getModule($e, $force);
-            }
+        $directoryContents = scandir(MB_PACKAGE_PATH . '/' . $this->name .'/modules');
+        foreach($directoryContents as $e) {
+          if(!is_dir(MB_PACKAGE_PATH . '/' . $this->name .'/modules'.'/'.$e)){
+            continue;
+          }
+          if(substr($e, 0, 1) != '.' && is_dir(MB_PACKAGE_PATH . '/'. $this->name. '/modules/' . $e)){
+              $this->getModule($e, $force);
+          }
         }
     }
     
